@@ -3,8 +3,13 @@ const app = express();
 const user = require("./users");
 const mongoose = require("mongoose");
 
+// Set up middleware to parse requests
+app.use(bodyparser.json({ limit: "30mb", extended: true }));
+app.use(bodyparser.urlencoded({ limit: "30mb", extended: true }));
+app.use(cors());
+
 mongoose.connect("mongodb://127.0.0.1:27017/pagination");
-mongoose.set("strictQuery", false);
+mongoose.set("strictQuery", true);
 const db = mongoose.connection;
 db.once("open", async () => {
   if ((await user.countDocuments().exec()) > 0) return;
@@ -20,6 +25,17 @@ db.once("open", async () => {
     user.create({ name: "name 9" }),
     user.create({ name: "name 10" }),
     user.create({ name: "name 11" }),
+    user.create({ name: "name 12" }),
+    user.create({ name: "name 13" }),
+    user.create({ name: "name 13" }),
+    user.create({ name: "name 15" }),
+    user.create({ name: "name 16" }),
+    user.create({ name: "name 17" }),
+    user.create({ name: "name 18" }),
+    user.create({ name: "name 19" }),
+    user.create({ name: "name 20" }),
+    user.create({ name: "name 21" }),
+    user.create({ name: "name 22" }),
   ]).then(() => console.log("added users"));
 });
 
@@ -29,8 +45,8 @@ app.get("/users", paginatedResults(user), (req, res) => {
 
 function paginatedResults(model) {
   return async (req, res, next) => {
-    const page = +req.query.page;
-    const limit = +req.query.limit;
+    const page = +req.query.page || 1;
+    const limit = +req.query.limit || 5;
 
     startIndex = (page - 1) * limit;
     endIndex = page * limit;
@@ -60,4 +76,4 @@ function paginatedResults(model) {
   };
 }
 
-app.listen(3000, () => console.log("app is listening on port 3000 "));
+app.listen(5000, () => console.log("app is listening on port 5000 "));
