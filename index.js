@@ -4,6 +4,7 @@ const cors = require("cors");
 const app = express();
 const user = require("./users");
 const mongoose = require("mongoose");
+const { countDocuments } = require("./users");
 
 // Set up middleware to parse requests
 app.use(bodyparser.json({ limit: "30mb", extended: true }));
@@ -54,6 +55,10 @@ function paginatedResults(model) {
     endIndex = page * limit;
 
     results = {};
+
+    results.count = {
+      count: await model.countDocuments().exec(),
+    };
 
     if (endIndex < (await model.countDocuments().exec())) {
       results.next = {
