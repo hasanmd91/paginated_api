@@ -1,4 +1,4 @@
-# Getting Started with Pginated Api and Pagination Table
+# Getting Started with Paginated Api and Pagination Table
 
 This project involves building a paginated API using Node.js that returns data in smaller, manageable chunks or pages to enhance performance and user experience. The API can be used to fetch small to large sets of data from a database.
 
